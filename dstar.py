@@ -196,10 +196,24 @@ class Dstar:
             if k_min >= state.h:
                 break
 
+    def estimate_cost(self, rx, ry):
+        cost = 0
+        for pos in range(len(rx)):
+            if (pos == 0):
+                continue
+            else:
+                # Camino en diagonal
+                if (rx[pos] != rx[pos-1] and ry[pos] != ry[pos-1]):
+                    cost += math.sqrt(2)
+                
+                # Camino recto
+                else:
+                    cost += 1
+        return cost
 
 def main():
     
-    maze = 4
+    maze = 1
     resize = 1
     # start and goal position
     sx = 5.0  # [m]
@@ -269,6 +283,9 @@ def main():
     end = m.map[goal[0]][goal[1]]
     dstar = Dstar(m)
     rx, ry = dstar.run(start, end)
+
+    cost = dstar.estimate_cost(rx, ry)
+    print(cost)
 
     if show_animation:
         plt.plot(rx, ry, "-r")

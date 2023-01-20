@@ -236,6 +236,21 @@ class AStarPlanner:
 
         return motion
 
+    def estimate_cost(self, rx, ry):
+        cost = 0
+        for pos in range(len(rx)):
+            if (pos == 0):
+                continue
+            else:
+                # Camino en diagonal
+                if (rx[pos] != rx[pos-1] and ry[pos] != ry[pos-1]):
+                    cost += math.sqrt(2)
+                
+                # Camino recto
+                else:
+                    cost += 1
+        return cost
+
 
 def main():
     print(__file__ + " start!!")
@@ -310,6 +325,9 @@ def main():
     a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = a_star.planning(sx, sy, gx, gy)
 
+    cost = a_star.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
+
     end_time = time.perf_counter()
 
     print("Tiempo de ejecución:", end_time - start_time)
@@ -380,6 +398,9 @@ def start(maze:int):
 
     a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = a_star.planning(sx, sy, gx, gy)
+
+    cost = a_star.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
 
     end_time = time.perf_counter()
     print("Tiempo de ejecución:", end_time - start_time)
