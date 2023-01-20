@@ -286,6 +286,16 @@ def main():
         grid_size = 1.0  # [m]
         robot_radius = 1.0  # [m]
         resize = 1
+
+    elif maze == 4:
+        # start and goal position
+        sx = 120.0  # [m]
+        sy = 30.0  # [m]
+        gx = 93.0 # [m]
+        gy = 74.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 9
     
     # Creamos un mapa
     gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
