@@ -322,5 +322,67 @@ def main():
         plt.pause(0.001)
         plt.show()
 
+
+def start(maze:int):
+    '''Ejecuta el algortimo A* sobre el mapa indicado.'''
+
+    print(__file__ + " start!!")
+    resize = 1
+
+    if maze == 1:
+        # start and goal position
+        sx = 5.0  # [m]
+        sy = 3.0  # [m]
+        gx = 80.0 # [m]
+        gy = 40.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 5
+    
+    elif maze == 2:
+        # start and goal position
+        sx = 60.0  # [m]
+        sy = 115.0  # [m]
+        gx = 60.0 # [m]
+        gy = 60.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 2
+
+    elif maze == 3:
+        # start and goal position
+        sx = 200.0  # [m]
+        sy = 100.0  # [m]
+        gx = 25.0 # [m]
+        gy = 41.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 1
+    
+    # Creamos un mapa
+    gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
+    ox, oy = gm.ox, gm.oy
+    
+    if show_animation:  # pragma: no cover
+        plt.plot(ox, oy, ".k")
+        plt.plot(sx, sy, "og")
+        plt.plot(gx, gy, "xb")
+        plt.grid(True)
+        plt.axis("equal")
+
+    start_time = time.perf_counter()
+
+    a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
+    rx, ry = a_star.planning(sx, sy, gx, gy)
+
+    end_time = time.perf_counter()
+    print("Tiempo de ejecución:", end_time - start_time)
+
+    if show_animation:  # pragma: no cover
+        plt.plot(rx, ry, "-r")
+        plt.pause(0.001)
+        plt.show()
+    
+
 if __name__ == '__main__':
     main()
