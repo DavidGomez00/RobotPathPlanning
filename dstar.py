@@ -199,7 +199,7 @@ class Dstar:
 
 def main():
     
-    maze = 3
+    maze = 4
     resize = 1
     # start and goal position
     sx = 5.0  # [m]
@@ -235,6 +235,16 @@ def main():
         sy = 100.0  # [m]
         gx = 25.0 # [m]
         gy = 41.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 1
+
+    elif maze == 4:
+        # start and goal position
+        sx = 61.0  # [m]
+        sy = 92.0  # [m]
+        gx = 36.0 # [m]
+        gy = 26.0  # [m]
         grid_size = 1.0  # [m]
         robot_radius = 1.0  # [m]
         resize = 1
