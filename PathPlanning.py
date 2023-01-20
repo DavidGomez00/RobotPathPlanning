@@ -13,12 +13,12 @@ def main():
         'Algoritmo': [],
         'Mapa': [],
         'Time': [],
-        'Coste': []
+        'Cost': []
     }
 
     # Dataframe
     df = pd.DataFrame(data)
-
+    #
     # Algorithms
     for a in ['AStar', 'BidirectionalAStar', 'DStar', 'Depth', 'Breadth']:
         for i in range(4):
@@ -27,7 +27,6 @@ def main():
             # Ejecutamos el algoritmo correspondiente
             if (a == 'AStar'):
                 time, cost = AStar.start(i+1)
-            '''
             elif (a == 'BidirectionalAStar'):
                 time, cost = bidirectional_a_star.start(i+1)
             elif (a == 'DStar'):
@@ -36,7 +35,6 @@ def main():
                 time, cost = depth_first_search.start(i+1)
             elif (a == 'Breadth'):
                 time, cost = breadth_first_search.start(i+1)
-            '''
             
             tmp_df = pd.DataFrame({
                 'Algoritmo': a,
@@ -46,7 +44,7 @@ def main():
             }, index=[0])
             df = pd.concat([df, tmp_df], ignore_index=True)
 
-    pd.to_excel("Results.xlsx")
+    df.to_excel("Results.xlsx")
 
 
 if __name__ == "__main__":
