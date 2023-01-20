@@ -12,7 +12,7 @@ from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = False
+show_animation = True
 
 
 class State:
@@ -263,6 +263,13 @@ def main():
     start = [int(sx), int(sy)]
     goal = [int(gx), int(gy)]
 
+    if show_animation:
+        plt.plot(ox, oy, ".k")
+        plt.plot(start[0], start[1], "og")
+        plt.plot(goal[0], goal[1], "xb")
+        plt.axis("equal")
+
+
     start = m.map[start[0]][start[1]]
     end = m.map[goal[0]][goal[1]]
     dstar = Dstar(m)
@@ -320,19 +327,25 @@ def start(maze:int):
     start = [int(sx), int(sy)]
     goal = [int(gx), int(gy)]
 
+    if show_animation:
+        plt.plot(ox, oy, ".k")
+        plt.plot(start[0], start[1], "og")
+        plt.plot(goal[0], goal[1], "xb")
+        plt.axis("equal")
+
     start = m.map[start[0]][start[1]]
     end = m.map[goal[0]][goal[1]]
+
     # Start Time
     start_time = time.perf_counter()
 
     # Execute algorithm
     dstar = Dstar(m)
+    rx, ry = dstar.run(start, end)
 
     # Stop Time
     end_time = time.perf_counter()
     print("Tiempo de ejecución:", end_time - start_time)
-
-    rx, ry = dstar.run(start, end)
 
     cost = dstar.estimate_cost(rx, ry)
     print(cost)
@@ -344,9 +357,11 @@ def start(maze:int):
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
         plt.pause(0.001)
-        plt.show()
+        #plt.show()
+        plt.savefig('Figures/DStar_maze' + str(maze) + '.png')
+        plt.clf()
     
-    return end_time - start_time
+    return end_time - start_time, cost
 
 if __name__ == '__main__':
     main()

@@ -13,7 +13,7 @@ from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = False
+show_animation = True
 
 
 class AStarPlanner:
@@ -386,6 +386,13 @@ def start(maze:int):
     gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
     ox, oy = gm.ox, gm.oy
 
+    if show_animation:  # pragma: no cover
+        plt.plot(ox, oy, ".k")
+        plt.plot(sx, sy, "og")
+        plt.plot(gx, gy, "xb")
+        plt.grid(True)
+        plt.axis("equal")
+
     # Start Time
     start_time = time.perf_counter()
 
@@ -393,19 +400,24 @@ def start(maze:int):
     a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = a_star.planning(sx, sy, gx, gy)
 
-    cost = a_star.estimate_cost(rx, ry)
-    print("Coste final: ", cost)
-
     # Stop Time
     end_time = time.perf_counter()
     print("Tiempo de ejecución:", end_time - start_time)
 
+    cost = a_star.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
+
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
         plt.pause(0.001)
-        plt.show()
+        #plt.show()
+        figure = plt.gcf() # get current figure
+        figure.set_size_inches(16, 12)
+        figure.savefig('Figures/AStar_maze' + str(maze) + '.png', dpi = (200))
+        figure.set_size_inches(4, 3)
+        plt.clf()
     
-    return end_time - start_time
+    return end_time - start_time, cost
 
 if __name__ == '__main__':
     main()

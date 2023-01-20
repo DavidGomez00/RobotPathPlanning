@@ -458,12 +458,16 @@ def start(maze:int):
     end_time = time.perf_counter()
     print("Tiempo de ejecución:", end_time - start_time)
 
+    cost = bidir_a_star.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
+
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
         plt.pause(.0001)
-        plt.show()
+        #plt.show()
+        plt.savefig('Figures/BidirectionalAStar_maze' + str(maze) + '.png')
     
-    return end_time - start_time
+    return end_time - start_time, cost
 
 if __name__ == '__main__':
     main()

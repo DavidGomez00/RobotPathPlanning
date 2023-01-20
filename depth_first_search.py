@@ -12,6 +12,8 @@ import math
 
 import matplotlib.pyplot as plt
 
+import time
+
 from GridManager import GridMaker
 
 show_animation = True
@@ -287,6 +289,83 @@ def main():
         plt.pause(0.01)
         plt.show()
 
+def start(maze:int):
+    '''Ejecuta el algortimo A* sobre el mapa indicado.'''
+    print("Maze" + str(maze) +  " start!!")
+    resize = 1
+
+    if maze == 1:
+        # start and goal position
+        sx = 5.0  # [m]
+        sy = 3.0  # [m]
+        gx = 80.0 # [m]
+        gy = 40.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 5
+    
+    elif maze == 2:
+        # start and goal position
+        sx = 60.0  # [m]
+        sy = 115.0  # [m]
+        gx = 60.0 # [m]
+        gy = 60.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 2
+
+    elif maze == 3:
+        # start and goal position
+        sx = 200.0  # [m]
+        sy = 100.0  # [m]
+        gx = 25.0 # [m]
+        gy = 41.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 1
+
+    elif maze == 4:
+        # start and goal position
+        sx = 120.0  # [m]
+        sy = 30.0  # [m]
+        gx = 93.0 # [m]
+        gy = 74.0  # [m]
+        grid_size = 1.0  # [m]
+        robot_radius = 1.0  # [m]
+        resize = 9
+    
+    # Creamos un mapa
+    gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
+    ox, oy = gm.ox, gm.oy
+
+    if show_animation:  # pragma: no cover
+        plt.plot(ox, oy, ".k")
+        plt.plot(sx, sy, "og")
+        plt.plot(gx, gy, "xb")
+        plt.grid(True)
+        plt.axis("equal")
+
+    # Start Time
+    start_time = time.perf_counter()
+
+    # Algoritmo
+    dfs = DepthFirstSearchPlanner(ox, oy, grid_size, robot_radius)
+    rx, ry = dfs.planning(sx, sy, gx, gy)
+
+    # Stop Time
+    end_time = time.perf_counter()
+    print("Tiempo de ejecución:", end_time - start_time)
+
+    cost = dfs.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
+
+    if show_animation:  # pragma: no cover
+        plt.plot(rx, ry, "-r")
+        plt.pause(0.01)
+        #plt.show()
+        plt.savefig('Figures/Depth_maze' + str(maze) + '.png')
+    
+    return end_time - start_time, cost
 
 if __name__ == '__main__':
     main()
