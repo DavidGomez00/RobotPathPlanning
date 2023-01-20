@@ -314,6 +314,7 @@ def main():
     rx, ry = a_star.planning(sx, sy, gx, gy)
 
     end_time = time.perf_counter()
+    
     print("Tiempo de ejecución:", end_time - start_time)
 
     if show_animation:  # pragma: no cover
