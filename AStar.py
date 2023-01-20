@@ -7,7 +7,6 @@ author: Atsushi Sakai(@Atsushi_twi)
 
 import math
 import time
-import multiprocessing
 import argparse
 
 from GridManager import GridMaker
@@ -322,7 +321,7 @@ def main():
 def start(maze:int):
     '''Ejecuta el algortimo A* sobre el mapa indicado.'''
 
-    print("Maze" + str(maze) +  "start!!")
+    print("Maze" + str(maze) +  " start!!")
     resize = 1
 
     if maze == 1:
@@ -368,19 +367,15 @@ def start(maze:int):
     # Creamos un mapa
     gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
     ox, oy = gm.ox, gm.oy
-    
-    if show_animation:  # pragma: no cover
-        plt.plot(ox, oy, ".k")
-        plt.plot(sx, sy, "og")
-        plt.plot(gx, gy, "xb")
-        plt.grid(True)
-        plt.axis("equal")
 
+    # Start Time
     start_time = time.perf_counter()
 
+    # Execute A*
     a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = a_star.planning(sx, sy, gx, gy)
 
+    # Stop Time
     end_time = time.perf_counter()
     print("Tiempo de ejecución:", end_time - start_time)
 

@@ -1,20 +1,18 @@
 """
-
 D* grid planning
 
 author: Nirnay Roy
-
-See Wikipedia article (https://en.wikipedia.org/wiki/D*)
-
 """
 import math
+import time
+import argparse
 
 from sys import maxsize
 from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = True
+show_animation = False
 
 
 class State:
@@ -199,15 +197,19 @@ class Dstar:
 
 def main():
     
-    maze = 4
+     # Parser de argumentos
+    parser = argparse.ArgumentParser()
+    # Número del mapa
+    parser.add_argument("-m", "--maze", type=int, help="Número del laberinto a procesar")
+    args = parser.parse_args()
+    maze = 1
     resize = 1
+
     # start and goal position
     sx = 5.0  # [m]
     sy = 3.0  # [m]
     gx = 80.0 # [m]
     gy = 40.0  # [m]
-    grid_size = 1.0  # [m]
-    robot_radius = 1.0  # [m]
 
     if maze == 1:
         # start and goal position
@@ -215,8 +217,6 @@ def main():
         sy = 3.0  # [m]
         gx = 80.0 # [m]
         gy = 40.0  # [m]
-        grid_size = 1.0  # [m]
-        robot_radius = 1.0  # [m]
         resize = 5
     
     elif maze == 2:
@@ -225,8 +225,6 @@ def main():
         sy = 115.0  # [m]
         gx = 60.0 # [m]
         gy = 60.0  # [m]
-        grid_size = 1.0  # [m]
-        robot_radius = 1.0  # [m]
         resize = 2
 
     elif maze == 3:
@@ -235,8 +233,6 @@ def main():
         sy = 100.0  # [m]
         gx = 25.0 # [m]
         gy = 41.0  # [m]
-        grid_size = 1.0  # [m]
-        robot_radius = 1.0  # [m]
         resize = 1
 
     elif maze == 4:
@@ -245,8 +241,6 @@ def main():
         sy = 30.0  # [m]
         gx = 93.0 # [m]
         gy = 74.0  # [m]
-        grid_size = 1.0  # [m]
-        robot_radius = 1.0  # [m]
         resize = 9
     
     # Creamos un mapa
@@ -259,11 +253,6 @@ def main():
 
     start = [int(sx), int(sy)]
     goal = [int(gx), int(gy)]
-    if show_animation:
-        plt.plot(ox, oy, ".k")
-        plt.plot(start[0], start[1], "og")
-        plt.plot(goal[0], goal[1], "xb")
-        plt.axis("equal")
 
     start = m.map[start[0]][start[1]]
     end = m.map[goal[0]][goal[1]]
@@ -274,6 +263,78 @@ def main():
         plt.plot(rx, ry, "-r")
         plt.show()
 
+def start(maze:int):
+    '''Ejecuta el algortimo A* sobre el mapa indicado.'''
+    print("Maze" + str(maze) +  " start!!")
+    resize = 1
+
+    if maze == 1:
+        # start and goal position
+        sx = 5.0  # [m]
+        sy = 3.0  # [m]
+        gx = 80.0 # [m]
+        gy = 40.0  # [m]
+        resize = 5
+    
+    elif maze == 2:
+        # start and goal position
+        sx = 60.0  # [m]
+        sy = 115.0  # [m]
+        gx = 60.0 # [m]
+        gy = 60.0  # [m]
+        resize = 2
+
+    elif maze == 3:
+        # start and goal position
+        sx = 200.0  # [m]
+        sy = 100.0  # [m]
+        gx = 25.0 # [m]
+        gy = 41.0  # [m]
+        resize = 1
+
+    elif maze == 4:
+        # start and goal position
+        sx = 120.0  # [m]
+        sy = 30.0  # [m]
+        gx = 93.0 # [m]
+        gy = 74.0  # [m]
+        resize = 9
+    
+    # Creamos un mapa
+    gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
+    ox, oy = gm.ox, gm.oy
+
+    m = Map(round(max(ox)), round(max(oy)))
+
+    m.set_obstacle([(i, j) for i, j in zip(ox, oy)])
+
+    start = [int(sx), int(sy)]
+    goal = [int(gx), int(gy)]
+
+    start = m.map[start[0]][start[1]]
+    end = m.map[goal[0]][goal[1]]
+    # Start Time
+    start_time = time.perf_counter()
+
+    # Execute algorithm
+    dstar = Dstar(m)
+
+    # Stop Time
+    end_time = time.perf_counter()
+    print("Tiempo de ejecución:", end_time - start_time)
+
+    rx, ry = dstar.run(start, end)
+
+    if show_animation:
+        plt.plot(rx, ry, "-r")
+        plt.show()
+
+    if show_animation:  # pragma: no cover
+        plt.plot(rx, ry, "-r")
+        plt.pause(0.001)
+        plt.show()
+    
+    return end_time - start_time
 
 if __name__ == '__main__':
     main()
