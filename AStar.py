@@ -14,7 +14,7 @@ from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = False
+show_animation = True
 
 
 class AStarPlanner:
@@ -186,7 +186,7 @@ class AStarPlanner:
             return False
 
         return True
-
+    
     def calc_obstacle_map(self, ox, oy):
 
         self.min_x = round(min(ox))
@@ -207,19 +207,26 @@ class AStarPlanner:
         self.obstacle_map = [[False for _ in range(self.y_width)]
                              for _ in range(self.x_width)]
 
-        with multiprocessing.Pool() as pool:
-            pool.starmap(self.calc_grid_obstacle, [(ix, iy, ox, oy)
-                                                   for ix in range(self.x_width)
-                                                   for iy in range(self.y_width)])
+        for ix in range(self.x_width):
+            x = self.calc_grid_position(ix, self.min_x)
+            for iy in range(self.y_width):
+                y = self.calc_grid_position(iy, self.min_y)
+                for iox, ioy in zip(ox, oy):
+                    d = math.hypot(iox - x, ioy - y)
+                    if d <= self.rr:
+                        self.obstacle_map[ix][iy] = True
+                        break
 
-    def calc_grid_obstacle(self, ix, iy, ox, oy):
-        x = self.calc_grid_position(ix, self.min_x)
-        y = self.calc_grid_position(iy, self.min_y)
-        for iox, ioy in zip(ox, oy):
-            d = math.hypot(iox - x, ioy - y)
-            if d <= self.rr:
-                self.obstacle_map[ix][iy] = True
-                break
+    def calc_grid_position(self, index, min_position):
+        """
+        calc grid position
+
+        :param index:
+        :param min_position:
+        :return:
+        """
+        pos = index * self.resolution + min_position
+        return pos
 
     def calc_grid_position(self, index, min_position):
         pos = index * self.resolution + min_position
@@ -314,7 +321,7 @@ def main():
     rx, ry = a_star.planning(sx, sy, gx, gy)
 
     end_time = time.perf_counter()
-    
+
     print("Tiempo de ejecución:", end_time - start_time)
 
     if show_animation:  # pragma: no cover
