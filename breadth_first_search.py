@@ -207,11 +207,26 @@ class BreadthFirstSearchPlanner:
 
         return motion
 
+    def estimate_cost(self, rx, ry):
+        cost = 0
+        for pos in range(len(rx)):
+            if (pos == 0):
+                continue
+            else:
+                # Camino en diagonal
+                if (rx[pos] != rx[pos-1] and ry[pos] != ry[pos-1]):
+                    cost += math.sqrt(2)
+                
+                # Camino recto
+                else:
+                    cost += 1
+        return cost
+
 
 def main():
     print(__file__ + " start!!")
 
-    maze = 3
+    maze = 1
     resize = 1
     if maze == 1:
         # start and goal position
@@ -266,6 +281,9 @@ def main():
 
     bfs = BreadthFirstSearchPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = bfs.planning(sx, sy, gx, gy)
+
+    cost = bfs.estimate_cost(rx, ry)
+    print("Coste final: ", cost)
 
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
