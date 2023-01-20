@@ -43,6 +43,6 @@ class GridMaker():
 
 
 if __name__ == "__main__":
-    gridMaker = GridMaker('Mazes/a.png')
+    gridMaker = GridMaker('Mazes/maze1.png')
     gridMaker.showMap()
     print(gridMaker.img.shape)
