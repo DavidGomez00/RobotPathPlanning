@@ -12,7 +12,7 @@ from GridManager import GridMaker
 import matplotlib.pyplot as plt
 
 
-show_animation = False
+show_animation = True
 
 
 class BidirectionalAStarPlanner:
@@ -318,7 +318,7 @@ def main():
     # Número del mapa
     parser.add_argument("-m", "--maze", type=int, help="Número del laberinto a procesar")
     args = parser.parse_args()
-    maze = 1
+    maze = 3
     resize = 1
 
     # Comprueba el maze
@@ -360,13 +360,13 @@ def main():
 
     elif maze == 4:
         # start and goal position
-        sx = 61.0  # [m]
-        sy = 92.0  # [m]
-        gx = 36.0 # [m]
-        gy = 26.0  # [m]
+        sx = 120.0  # [m]
+        sy = 30.0  # [m]
+        gx = 93.0 # [m]
+        gy = 74.0  # [m]
         grid_size = 1.0  # [m]
         robot_radius = 1.0  # [m]
-        resize = 1
+        resize = 9
 
     # Creamos un mapa
     gm = GridMaker('Mazes/maze' + str(maze) + '.png', resize)
@@ -465,7 +465,11 @@ def start(maze:int):
         plt.plot(rx, ry, "-r")
         plt.pause(.0001)
         #plt.show()
-        plt.savefig('Figures/BidirectionalAStar_maze' + str(maze) + '.png')
+        figure = plt.gcf() # get current figure
+        figure.set_size_inches(16, 12)
+        figure.savefig('Figures/BidirectionalAStar_maze' + str(maze) + '.png', dpi = (200))
+        figure.set_size_inches(4, 3)
+        plt.clf()
     
     return end_time - start_time, cost
 

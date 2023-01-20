@@ -28,6 +28,8 @@ def main():
             if (a == 'AStar'):
                 time, cost = AStar.start(i+1)
             elif (a == 'BidirectionalAStar'):
+                if (i == 1):
+                    continue
                 time, cost = bidirectional_a_star.start(i+1)
             elif (a == 'DStar'):
                 time, cost = dstar.start(i+1)

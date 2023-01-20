@@ -363,7 +363,11 @@ def start(maze:int):
         plt.plot(rx, ry, "-r")
         plt.pause(0.01)
         #plt.show()
-        plt.savefig('Figures/Depth_maze' + str(maze) + '.png')
+        figure = plt.gcf() # get current figure
+        figure.set_size_inches(16, 12)
+        figure.savefig('Figures/Depth_maze' + str(maze) + '.png', dpi = (200))
+        figure.set_size_inches(4, 3)
+        plt.clf()
     
     return end_time - start_time, cost
 

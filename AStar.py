@@ -13,7 +13,7 @@ from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = False
+show_animation = True
 
 
 class AStarPlanner:

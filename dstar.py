@@ -12,7 +12,7 @@ from GridManager import GridMaker
 
 import matplotlib.pyplot as plt
 
-show_animation = False
+show_animation = True
 
 
 class State:
@@ -348,17 +348,16 @@ def start(maze:int):
     print("Tiempo de ejecución:", end_time - start_time)
 
     cost = dstar.estimate_cost(rx, ry)
-    print(cost)
-
-    if show_animation:
-        plt.plot(rx, ry, "-r")
-        plt.show()
+    print("Coste final: ", cost)
 
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
         plt.pause(0.001)
         #plt.show()
-        plt.savefig('Figures/DStar_maze' + str(maze) + '.png')
+        figure = plt.gcf() # get current figure
+        figure.set_size_inches(16, 12)
+        figure.savefig('Figures/DStar_maze' + str(maze) + '.png', dpi = (200))
+        figure.set_size_inches(4, 3)
         plt.clf()
     
     return end_time - start_time, cost
